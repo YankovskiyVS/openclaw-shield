@@ -7,11 +7,23 @@
 ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝ ╚═════╝
 ```
 
-# @knostic/openclaw-shield
+# OpenClaw Detection & Response Plugin - Alpha
 
 By [Knostic](https://knostic.ai/)
 
-Security guardrail plugin for [OpenClaw](https://github.com/openclaw/openclaw). Prevents your AI agent from leaking secrets, exposing PII, or executing destructive commands.
+> openclaw-shield:** Security detection and response plugin for [OpenClaw](https://github.com/openclaw/openclaw). Prevents your AI agent from leaking secrets, exposing PII, or executing destructive commands.
+**CRITICAL:** OpenClaw gets updated constantly, and without community updates, it won't stay effective for more than mere days. already we had to update it several times.
+
+**By [Knostic](https://knostic.ai/)**
+
+Also check out:
+- **openclaw-detect:** https://github.com/knostic/openclaw-detect/
+- **openclaw-telemetry:** https://github.com/knostic/openclaw-telemetry/
+- **Like what we do?** Knostic helps you with visibility and control of your coding agents and MCP/extensions, from Cursor and Claude Code, to Copilot.
+
+---
+
+# OpenClaw Detection & Response Plugin - TL;DR
 
 Five layers of defense-in-depth security, each independently toggleable:
 
@@ -122,4 +134,4 @@ No build step required — OpenClaw transpiles TypeScript at load time via jiti.
 
 ## License
 
-MIT
+Apache 2.0 — see LICENSE for details.
