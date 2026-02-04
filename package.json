@@ -1,0 +1,34 @@
+{
+  "name": "@knostic/openclaw-shield",
+  "version": "0.1.0",
+  "description": "Security guardrail plugin for OpenClaw — blocks destructive commands, redacts secrets and PII",
+  "type": "module",
+  "openclaw": {
+    "extensions": ["./src/index.ts"]
+  },
+  "files": [
+    "src/",
+    "docs/",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "security",
+    "guardrails",
+    "pii",
+    "secrets",
+    "redaction"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knostic/openclaw-shield"
+  },
+  "license": "MIT",
+  "author": "Knostic",
+  "peerDependencies": {
+    "openclaw": "*"
+  }
+}

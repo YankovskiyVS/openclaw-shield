@@ -1,0 +1,60 @@
+{
+  "id": "openclaw-shield",
+  "name": "Knostic Security Shield",
+  "description": "Security guardrail plugin — blocks destructive commands, redacts secrets and PII from agent output",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "mode": {
+        "type": "string",
+        "description": "Enforcement mode: 'enforce' blocks and redacts, 'audit' only logs findings",
+        "enum": ["enforce", "audit"],
+        "default": "enforce"
+      },
+      "layers": {
+        "type": "object",
+        "description": "Enable or disable individual security layers",
+        "additionalProperties": false,
+        "properties": {
+          "promptGuard": {
+            "type": "boolean",
+            "description": "L1: Inject security policy into agent context",
+            "default": true
+          },
+          "outputScanner": {
+            "type": "boolean",
+            "description": "L2: Redact secrets/PII from tool output",
+            "default": true
+          },
+          "toolBlocker": {
+            "type": "boolean",
+            "description": "L3: Hard-block tool calls (requires host support)",
+            "default": true
+          },
+          "inputAudit": {
+            "type": "boolean",
+            "description": "L4: Audit log inbound messages",
+            "default": true
+          },
+          "securityGate": {
+            "type": "boolean",
+            "description": "L5: Security gate tool for exec/read gating",
+            "default": true
+          }
+        }
+      },
+      "sensitiveFilePaths": {
+        "type": "array",
+        "description": "Additional file path patterns to block (regex strings)",
+        "items": { "type": "string" }
+      },
+      "destructiveCommands": {
+        "type": "array",
+        "description": "Additional destructive command patterns to block (regex strings)",
+        "items": { "type": "string" }
+      }
+    }
+  }
+}
