@@ -7,11 +7,11 @@
 ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝ ╚═════╝
 ```
 
-# OpenClaw Detection & Response Plugin - Alpha
+# OpenClaw Shield - Alpha
 
 By [Knostic](https://knostic.ai/)
 
-> openclaw-shield:** Security detection and response plugin for [OpenClaw](https://github.com/openclaw/openclaw). Prevents your AI agent from leaking secrets, exposing PII, or executing destructive commands.
+> openclaw-shield:** Security plugin for [OpenClaw](https://github.com/openclaw/openclaw). Prevents your AI agent from leaking secrets, exposing PII, or executing destructive commands.
 **CRITICAL:** OpenClaw gets updated constantly, and without community updates, it won't stay effective for more than mere days. already we had to update it several times.
 
 **By [Knostic](https://knostic.ai/)**
@@ -23,7 +23,7 @@ Also check out:
 
 ---
 
-# OpenClaw Detection & Response Plugin - TL;DR
+# OpenClaw Shield Plugin - TL;DR
 
 Five layers of defense-in-depth security, each independently toggleable:
 
