@@ -34,6 +34,72 @@ Five layers of defense-in-depth security, each independently toggleable:
 | **L3 Tool Blocker** | Hard-blocks dangerous tool calls at the host level | `before_tool_call` |
 | **L4 Input Audit** | Logs inbound messages and flags any secrets users accidentally send | `message_received` |
 | **L5 Security Gate** | A gate tool the agent must call before exec or file-read, returning ALLOWED/DENIED | `registerTool` |
+| **L6 Prompt Scan** | Classifies user prompt via Foundation Models API; blocks tools for unsafe turns | `before_agent_start`, `agent_end` |
+
+## Cloud.ru fork (v0.2.0)
+
+### Directory allowlist
+
+Destructive commands (`rm`, etc.) are blocked by default. Allow them **only** when every path in the command stays under `pathPrefix` and the verb is listed in `allowedCommands`:
+
+```jsonc
+"directoryAllowlists": [
+  {
+    "pathPrefix": "/home/openclaw/.openclaw/workspace",
+    "allowedCommands": ["rm", "mv", "cp", "mkdir", "rmdir", "touch", "chmod", "ln"]
+  }
+]
+```
+
+### L6 — Foundation Models prompt scan
+
+Optional scan via OpenAI-compatible API ([Evolution Foundation Models](https://foundation-models.api.cloud.ru/v1)), default model `hivetrace/HiveTracePro`.
+
+**Environment variables** (never put API keys in plugin config):
+
+| Env | Purpose |
+|-----|---------|
+| `FOUNDATION_MODELS_API_ENDPOINT` | Base URL, e.g. `https://foundation-models.api.cloud.ru/v1` |
+| `FOUNDATION_MODELS_API_KEY` | Bearer token |
+| `OPENCLAW_GUARDRAILS_FM_MODEL` | Model id (optional override) |
+
+**Fallback (default):** if FM does not respond within `timeoutMs` (15s) or returns an error, L6 is skipped and **L1–L5** still apply (`onScanFailure: "fallback"`).
+
+**Unsafe prompt:** sets a per-session flag until `agent_end` and hard-blocks all `before_tool_call` invocations.
+
+```jsonc
+"foundationModelsScan": {
+  "enabled": true,
+  "model": "hivetrace/HiveTracePro",
+  "timeoutMs": 15000,
+  "onScanFailure": "fallback"
+},
+"layers": { "promptScan": true }
+```
+
+### EvoClaw CR example
+
+```yaml
+plugins:
+  entries:
+    openclaw-shield:
+      enabled: true
+      config:
+        mode: enforce
+        directoryAllowlists:
+          - pathPrefix: /home/openclaw/.openclaw/workspace
+            allowedCommands: [rm, mv, cp, mkdir, rmdir, touch, chmod, ln]
+        foundationModelsScan:
+          enabled: true
+          timeoutMs: 15000
+          onScanFailure: fallback
+        layers:
+          promptScan: true
+          toolBlocker: true
+          securityGate: true
+```
+
+Run unit tests: `npm test` from this directory.
 
 ## Installation
 

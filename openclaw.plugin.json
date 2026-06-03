@@ -1,15 +1,15 @@
 {
   "id": "openclaw-shield",
   "name": "Knostic Security Shield",
-  "description": "Security guardrail plugin — blocks destructive commands, redacts secrets and PII from agent output",
-  "version": "0.1.0",
+  "description": "Security guardrail plugin — directory allowlist, FM prompt scan, blocks destructive commands, redacts secrets and PII",
+  "version": "0.2.0",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
     "properties": {
       "mode": {
         "type": "string",
-        "description": "Enforcement mode: 'enforce' blocks and redacts, 'audit' only logs findings",
+        "description": "Enforcement mode: 'enforce' blocks and redacts, 'audit' logs only",
         "enum": ["enforce", "audit"],
         "default": "enforce"
       },
@@ -18,42 +18,87 @@
         "description": "Enable or disable individual security layers",
         "additionalProperties": false,
         "properties": {
-          "promptGuard": {
+          "promptGuard": { "type": "boolean", "default": true },
+          "outputScanner": { "type": "boolean", "default": true },
+          "toolBlocker": { "type": "boolean", "default": true },
+          "inputAudit": { "type": "boolean", "default": true },
+          "securityGate": { "type": "boolean", "default": true },
+          "promptScan": {
             "type": "boolean",
-            "description": "L1: Inject security policy into agent context",
-            "default": true
-          },
-          "outputScanner": {
-            "type": "boolean",
-            "description": "L2: Redact secrets/PII from tool output",
-            "default": true
-          },
-          "toolBlocker": {
-            "type": "boolean",
-            "description": "L3: Hard-block tool calls (requires host support)",
-            "default": true
-          },
-          "inputAudit": {
-            "type": "boolean",
-            "description": "L4: Audit log inbound messages",
-            "default": true
-          },
-          "securityGate": {
-            "type": "boolean",
-            "description": "L5: Security gate tool for exec/read gating",
+            "description": "L6: Foundation Models prompt scan (requires foundationModelsScan.enabled)",
             "default": true
           }
         }
       },
       "sensitiveFilePaths": {
         "type": "array",
-        "description": "Additional file path patterns to block (regex strings)",
+        "description": "Additional regex patterns for file-read gating",
         "items": { "type": "string" }
       },
       "destructiveCommands": {
         "type": "array",
-        "description": "Additional destructive command patterns to block (regex strings)",
+        "description": "Additional destructive command regex patterns (merged with defaults unless disableDefaultDestructivePatterns)",
         "items": { "type": "string" }
+      },
+      "disableDefaultDestructivePatterns": {
+        "type": "boolean",
+        "description": "If true, only use destructiveCommands from config",
+        "default": false
+      },
+      "directoryAllowlists": {
+        "type": "array",
+        "description": "Allow destructive commands when all path operands stay under pathPrefix",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "pathPrefix": { "type": "string" },
+            "pathPrefixEnv": {
+              "type": "string",
+              "description": "Env var overriding pathPrefix at runtime"
+            },
+            "allowedCommands": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "e.g. rm, mv, cp"
+            }
+          },
+          "required": ["pathPrefix", "allowedCommands"]
+        }
+      },
+      "foundationModelsScan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enabled": { "type": "boolean", "default": false },
+          "baseUrlEnv": {
+            "type": "string",
+            "default": "FOUNDATION_MODELS_API_ENDPOINT"
+          },
+          "apiKeyEnv": {
+            "type": "string",
+            "default": "FOUNDATION_MODELS_API_KEY"
+          },
+          "modelEnv": {
+            "type": "string",
+            "default": "OPENCLAW_GUARDRAILS_FM_MODEL"
+          },
+          "model": {
+            "type": "string",
+            "default": "hivetrace/HiveTracePro"
+          },
+          "timeoutMs": {
+            "type": "number",
+            "default": 15000,
+            "description": "FM API timeout; on exceed uses onScanFailure fallback"
+          },
+          "onScanFailure": {
+            "type": "string",
+            "enum": ["fallback", "block"],
+            "default": "fallback",
+            "description": "fallback: use L1-L5 only; block: treat errors as unsafe"
+          }
+        }
       }
     }
   }
