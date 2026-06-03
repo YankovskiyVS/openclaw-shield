@@ -55,6 +55,8 @@ Destructive commands (`rm`, etc.) are blocked by default. Allow them **only** wh
 
 Optional scan via OpenAI-compatible API ([Evolution Foundation Models](https://foundation-models.api.cloud.ru/v1)), default model `hivetrace/HiveTracePro`.
 
+**HiveTrace mode (`responseFormat: "hivetrace"`, default):** sends **only the latest user message** (not full chat history). No JSON classifier system prompt — the model must reply with one token: `true` (safe) or `false` (unsafe).
+
 **Environment variables** (never put API keys in plugin config):
 
 | Env | Purpose |
@@ -62,17 +64,20 @@ Optional scan via OpenAI-compatible API ([Evolution Foundation Models](https://f
 | `FOUNDATION_MODELS_API_ENDPOINT` | Base URL, e.g. `https://foundation-models.api.cloud.ru/v1` |
 | `FOUNDATION_MODELS_API_KEY` | Bearer token |
 | `OPENCLAW_GUARDRAILS_FM_MODEL` | Model id (optional override) |
+| `OPENCLAW_GUARDRAILS_FM_APP_TITLE` | `X-App-Title` header (optional) |
 
-**Fallback (default):** if FM does not respond within `timeoutMs` (15s) or returns an error, L6 is skipped and **L1–L5** still apply (`onScanFailure: "fallback"`).
+**Fallback (default):** if FM times out, returns something other than `true`/`false`, or errors, L6 is skipped and **L1–L5** still apply (`onScanFailure: "fallback"`).
 
 **Unsafe prompt:** sets a per-session flag until `agent_end` and hard-blocks all `before_tool_call` invocations.
 
 ```jsonc
 "foundationModelsScan": {
   "enabled": true,
+  "responseFormat": "hivetrace",
   "model": "hivetrace/HiveTracePro",
   "timeoutMs": 15000,
-  "onScanFailure": "fallback"
+  "onScanFailure": "fallback",
+  "appTitleEnv": "OPENCLAW_GUARDRAILS_FM_APP_TITLE"
 },
 "layers": { "promptScan": true }
 ```

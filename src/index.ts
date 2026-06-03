@@ -78,11 +78,11 @@ function registerLayer6(api: OpenClawPluginApi, config: GuardConfig): void {
   api.on(
     "before_agent_start",
     async (event, ctx) => {
-      const prompt = typeof event.prompt === "string" ? event.prompt : "";
-      if (!prompt.trim()) return;
+      const rawPrompt = typeof event.prompt === "string" ? event.prompt : "";
+      if (!rawPrompt.trim()) return;
 
       const sessionKey = sessionKeyFromCtx(ctx as { sessionKey?: string });
-      const scan = await scanPrompt(prompt, config);
+      const scan = await scanPrompt(rawPrompt, config);
 
       if (scan.verdict === "skipped") {
         console.log(

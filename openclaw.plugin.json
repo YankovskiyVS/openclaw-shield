@@ -97,6 +97,21 @@
             "enum": ["fallback", "block"],
             "default": "fallback",
             "description": "fallback: use L1-L5 only; block: treat errors as unsafe"
+          },
+          "responseFormat": {
+            "type": "string",
+            "enum": ["hivetrace", "json"],
+            "default": "hivetrace",
+            "description": "hivetrace: single user message, model replies true/false; json: legacy JSON classifier"
+          },
+          "appTitle": {
+            "type": "string",
+            "description": "X-App-Title header for FM API (overridden by appTitleEnv when set)"
+          },
+          "appTitleEnv": {
+            "type": "string",
+            "default": "OPENCLAW_GUARDRAILS_FM_APP_TITLE",
+            "description": "Env var for X-App-Title header"
           }
         }
       }

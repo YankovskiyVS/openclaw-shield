@@ -10,6 +10,8 @@ export type DirectoryAllowlistEntry = {
   allowedCommands: string[];
 };
 
+export type FoundationModelsScanResponseFormat = "hivetrace" | "json";
+
 export type FoundationModelsScanConfig = {
   enabled?: boolean;
   baseUrlEnv?: string;
@@ -18,6 +20,11 @@ export type FoundationModelsScanConfig = {
   model?: string;
   timeoutMs?: number;
   onScanFailure?: "fallback" | "block";
+  /** hivetrace: model returns only true/false; json: legacy JSON classifier prompt */
+  responseFormat?: FoundationModelsScanResponseFormat;
+  /** Static X-App-Title header value (overridden by appTitleEnv when set) */
+  appTitle?: string;
+  appTitleEnv?: string;
 };
 
 export type GuardConfig = {
