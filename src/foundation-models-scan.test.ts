@@ -84,8 +84,10 @@ describe("foundation-models-scan", () => {
     process.env.TEST_FM_APP_TITLE = "redesign-test";
 
     let capturedBody = "";
+    let capturedHeaders: HeadersInit | undefined;
     const mockFetch: typeof fetch = async (_url, init) => {
       capturedBody = String(init?.body ?? "");
+      capturedHeaders = init?.headers;
       return new Response(
         JSON.stringify({ choices: [{ message: { content: "true" } }] }),
         { status: 200 },
@@ -103,6 +105,9 @@ describe("foundation-models-scan", () => {
     assert.equal(body.messages[0].role, "user");
     assert.equal(body.messages[0].content, "а что ты умеешь?");
     assert.equal(body.max_tokens, 8);
+
+    const headers = new Headers(capturedHeaders);
+    assert.equal(headers.get("X-Title"), "redesign-test");
   });
 
   it("returns unsafe when hivetrace returns false", async () => {

@@ -147,7 +147,7 @@ export async function scanPrompt(
     "Content-Type": "application/json",
   };
   if (creds.appTitle) {
-    headers["X-App-Title"] = creds.appTitle;
+    headers["X-Title"] = creds.appTitle;
   }
 
   const useHiveTrace = fm.responseFormat === "hivetrace";

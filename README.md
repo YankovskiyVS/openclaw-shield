@@ -64,7 +64,7 @@ Optional scan via OpenAI-compatible API ([Evolution Foundation Models](https://f
 | `FOUNDATION_MODELS_API_ENDPOINT` | Base URL, e.g. `https://foundation-models.api.cloud.ru/v1` |
 | `FOUNDATION_MODELS_API_KEY` | Bearer token |
 | `OPENCLAW_GUARDRAILS_FM_MODEL` | Model id (optional override) |
-| `OPENCLAW_GUARDRAILS_FM_APP_TITLE` | `X-App-Title` header (optional) |
+| `OPENCLAW_GUARDRAILS_FM_APP_TITLE` | `X-Title` header (optional) |
 
 **Fallback (default):** if FM times out, returns something other than `true`/`false`, or errors, L6 is skipped and **L1–L5** still apply (`onScanFailure: "fallback"`).
 

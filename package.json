@@ -32,9 +32,12 @@
     "openclaw": "*"
   },
   "scripts": {
-    "test": "node --import tsx --test src/command-policy.test.ts src/foundation-models-scan.test.ts src/prompt-extract.ts"
+    "test": "node --import tsx --test src/command-policy.test.ts src/foundation-models-scan.test.ts src/prompt-extract.ts",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "tsx": "^4.19.0"
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
   }
 }

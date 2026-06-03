@@ -106,12 +106,12 @@
           },
           "appTitle": {
             "type": "string",
-            "description": "X-App-Title header for FM API (overridden by appTitleEnv when set)"
+            "description": "X-Title header for FM API (overridden by appTitleEnv when set)"
           },
           "appTitleEnv": {
             "type": "string",
             "default": "OPENCLAW_GUARDRAILS_FM_APP_TITLE",
-            "description": "Env var for X-App-Title header"
+            "description": "Env var for X-Title header"
           }
         }
       }

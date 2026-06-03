@@ -22,7 +22,7 @@ export type FoundationModelsScanConfig = {
   onScanFailure?: "fallback" | "block";
   /** hivetrace: model returns only true/false; json: legacy JSON classifier prompt */
   responseFormat?: FoundationModelsScanResponseFormat;
-  /** Static X-App-Title header value (overridden by appTitleEnv when set) */
+  /** Static X-Title header value (overridden by appTitleEnv when set) */
   appTitle?: string;
   appTitleEnv?: string;
 };
